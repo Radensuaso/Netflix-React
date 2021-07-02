@@ -6,6 +6,15 @@ body {
 }
 
 /*Nav Bar*/
+
+nav.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9;
+}
+
 .bg-dark-netflix {
   background-color: #141414;
 }
@@ -16,6 +25,11 @@ body {
 
 #profile-pic {
   width: 2rem;
+}
+
+/* Main */
+main {
+  margin-top: 5rem;
 }
 
 /*Footer*/

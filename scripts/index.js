@@ -13,7 +13,7 @@ const isLoading = async function (loading) {
 const generateCol = (movie) => {
   return `<div class="col-12 col-sm-4 col-md-3 col-lg-2 mb-4">
     <a href="../backoffice.html?movieID=${movie._id}&movieCategory=${movie.category}"
-      ><img class="img-fluid" src=${movie.imageUrl} alt="${movie.name} Picture"
+    target="_blank"><img class="img-fluid" src=${movie.imageUrl} alt="${movie.name} Picture"
     /></a>
   </div>`
 }
@@ -85,7 +85,50 @@ const generateDrama = async (url, genres) => {
 }
 
 //function to generate trending now movies/shows
-const generateTrendingNow = async (url, genres) => {}
+const generateTrendingNow = async (url, genres) => {
+  try {
+    const response = await fetch(url + genres[0], {
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjNjA5ZmIzNTgxNzAwMTVjMjI3MGMiLCJpYXQiOjE2MjUwNTUzOTEsImV4cCI6MTYyNjI2NDk5MX0.4rreCWruc8iinYHIIdhbPTQo52bs9c82UeMWN-fKg0o",
+      },
+    })
+
+    const fantasyMovies = await response.json()
+
+    const response2 = await fetch(url + genres[1], {
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjNjA5ZmIzNTgxNzAwMTVjMjI3MGMiLCJpYXQiOjE2MjUwNTUzOTEsImV4cCI6MTYyNjI2NDk5MX0.4rreCWruc8iinYHIIdhbPTQo52bs9c82UeMWN-fKg0o",
+      },
+    })
+
+    const comedyMovies = await response2.json()
+
+    const response3 = await fetch(url + genres[2], {
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjNjA5ZmIzNTgxNzAwMTVjMjI3MGMiLCJpYXQiOjE2MjUwNTUzOTEsImV4cCI6MTYyNjI2NDk5MX0.4rreCWruc8iinYHIIdhbPTQo52bs9c82UeMWN-fKg0o",
+      },
+    })
+
+    const dramaMovies = await response3.json()
+    const trendingNowMovies = [
+      ...fantasyMovies,
+      ...comedyMovies,
+      ...dramaMovies,
+    ]
+
+    const trendingNowRow = document.querySelector(
+      "#trending-now-container .row"
+    )
+    trendingNowMovies.forEach((movie) => {
+      trendingNowRow.innerHTML += generateCol(movie)
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
 //Window onload
 window.onload = () => {
   const url = "https://striveschool-api.herokuapp.com/api/movies/"
