@@ -1,11 +1,17 @@
 //get Movie ID if any
+const movieCategory = new URLSearchParams(window.location.search).get(
+  "movieCategory"
+)
+
 const movieID = new URLSearchParams(window.location.search).get("movieID")
 
 //Url
 const url = "https://striveschool-api.herokuapp.com/api/movies/"
 
-// check if there's an Id on on search, if so let the url be modified by it
-const endPoint = movieID ? url + movieID : url
+// check if there's an Id and category on on search, if so let the url be modified by it
+const deleteLoadInfoEndPoint = movieID ? url + movieID : url
+
+const loadInfoEndPoint = url + movieCategory
 
 //method to use depending if there's an ID or not
 const method = movieID ? "PUT" : "POST"
@@ -14,7 +20,6 @@ const method = movieID ? "PUT" : "POST"
 
 const isLoading = async function (loading) {
   const spinner = document.querySelector(".spinner-grow")
-  console.log(spinner)
   if (loading) {
     spinner.classList.remove("d-none")
   } else {
@@ -35,22 +40,26 @@ const checkId = async function () {
 
     isLoading(true)
     try {
-      const response = await fetch(endPoint, {
+      const response = await fetch(loadInfoEndPoint, {
         headers: {
           Authorization:
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjNjA5ZmIzNTgxNzAwMTVjMjI3MGMiLCJpYXQiOjE2MjUwNTUzOTEsImV4cCI6MTYyNjI2NDk5MX0.4rreCWruc8iinYHIIdhbPTQo52bs9c82UeMWN-fKg0o",
         },
       })
 
-      const movie = await response.json()
+      const movies = await response.json()
+
+      movies.forEach((movie) => {
+        if (movie._id === movieID) {
+          document.getElementById("movie-show-name").value = movie.name
+          document.getElementById("movie-show-description").value =
+            movie.description
+          document.getElementById("movie-show-category").value = movie.category
+          document.getElementById("movie-show-image").value = movie.imageUrl
+        }
+      })
 
       isLoading(false)
-
-      document.getElementById("movie-show-name").value = movie.name
-      document.getElementById("movie-show-description").value =
-        movie.description
-      document.getElementById("movie-show-category").value = movie.category
-      document.getElementById("movie-show-image").value = movie.imageUrl
     } catch (err) {
       document.querySelector("#error-container .text-danger").innerText = err
     }
@@ -61,16 +70,93 @@ const checkId = async function () {
 
 // function to submit or edit a movie
 const postOrEditMovies = async (event) => {
-  const response = await fetch(url, {
-    method,
-    headers: {
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjNjA5ZmIzNTgxNzAwMTVjMjI3MGMiLCJpYXQiOjE2MjUwNTUzOTEsImV4cCI6MTYyNjI2NDk5MX0.4rreCWruc8iinYHIIdhbPTQo52bs9c82UeMWN-fKg0o",
-    },
-  })
+  // prevent the default behavior of the form
+  event.preventDefault()
 
-  const movies = await response.json()
-  console.log(movies)
+  //submitted Movie as an object
+  const submittedMovie = {
+    name: document.getElementById("movie-show-name").value,
+    description: document.getElementById("movie-show-description").value,
+    category: document.getElementById("movie-show-category").value,
+    imageUrl: document.getElementById("movie-show-image").value,
+  }
+
+  isLoading(true)
+  // Fetch the Api and post the new object
+  try {
+    const response = await fetch(deleteLoadInfoEndPoint, {
+      method,
+      body: JSON.stringify(submittedMovie),
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjNjA5ZmIzNTgxNzAwMTVjMjI3MGMiLCJpYXQiOjE2MjUwNTUzOTEsImV4cCI6MTYyNjI2NDk5MX0.4rreCWruc8iinYHIIdhbPTQo52bs9c82UeMWN-fKg0o",
+
+        "Content-Type": "application/json",
+      },
+    })
+
+    isLoading(false)
+
+    if (response.ok) {
+      /* const alertSuccess = document.querySelector(".alert-success") */
+      if (movieID) {
+        /* alertSuccess.classList.remove("d-none")
+        alertSuccess.innerText = `Your Movie with the ID:${movie._id} was edited with Success!` */
+        console.log("The Movie/Show was Edited with success")
+      } else {
+        /* 
+        alertSuccess.classList.remove("d-none")
+        alertSuccess.innerText = `Your Movie was submitted with success! Movie ID: ${movie._id}` */
+        console.log("The Movie/Show was submitted with success")
+      }
+    } /* 
+    setTimeout(() => {
+      window.location.href = "/"
+    }, 4000) */
+  } catch (err) {
+    /* const alertDanger = document.querySelector(".alert-danger")
+    alertDanger.classList.remove("d-none")
+    alertDanger.innerText = err */
+    console.log(err)
+  }
+}
+
+//function to delete a movie/show from the API
+const deleteMovie = async function () {
+  const confirmed = confirm("Are you sure you want to delete this Movie/Show?")
+  if (confirmed) {
+    isLoading(true)
+    try {
+      const response = await fetch(deleteLoadInfoEndPoint, {
+        method: "DELETE",
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjNjA5ZmIzNTgxNzAwMTVjMjI3MGMiLCJpYXQiOjE2MjUwNTUzOTEsImV4cCI6MTYyNjI2NDk5MX0.4rreCWruc8iinYHIIdhbPTQo52bs9c82UeMWN-fKg0o",
+        },
+      })
+
+      const movie = await response.json()
+
+      isLoading(false)
+
+      const alertSuccess = document.querySelector(".alert-success")
+      if (response.ok) {
+        /* alertSuccess.classList.remove("d-none")
+        alertSuccess.innerText = `Your movie with the ID: ${movie._id} was deleted with Success!` */
+        console.log("Movie/Show was deleted with success")
+      }
+      /* 
+      setTimeout(() => {
+        window.location.href = "/"
+      }, 4000) */
+    } catch (err) {
+      if (err) {
+        const alertDanger = document.querySelector(".alert-danger")
+        alertDanger.classList.remove("d-none")
+        alertDanger.innerText = err
+      }
+    }
+  }
 }
 
 window.onload = () => {

@@ -25,47 +25,49 @@
     <title>Netflix Clone</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark-netflix px-5">
-      <a class="navbar-brand" href="#"
-        ><img src="assets/netflix_logo.png" alt="" id="logo-navbar"
-      /></a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark-netflix">
+      <div class="container-fluid">
+        <a class="navbar-brand ml-3" href="#"
+          ><img src="assets/netflix_logo.png" alt="" id="logo-navbar"
+        /></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./backoffice.html">Back Office</a>
-          </li>
-        </ul>
-        <i class="fas fa-search mr-3"></i>
-        <p class="pt-3 mr-3">André</p>
-        <i class="fas fa-bell mr-3"></i>
-        <img
-          id="profile-pic"
-          class="mr-2"
-          src="./assets/profile-picture.png"
-          alt="profile picture"
-        />
-        <i class="fas fa-sort-down"></i>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./backoffice.html">Back Office</a>
+            </li>
+          </ul>
+          <i class="fas fa-search mr-3"></i>
+          <p class="pt-3 mr-3">André</p>
+          <i class="fas fa-bell mr-3"></i>
+          <img
+            id="profile-pic"
+            class="mr-2"
+            src="./assets/profile-picture.png"
+            alt="profile picture"
+          />
+          <i class="fas fa-sort-down"></i>
+        </div>
       </div>
     </nav>
 
-    <div class="container-fluid px-5 mt-2">
-      <div id="row-icons" class="d-flex">
-        <h3 class="pr-3">TV Shows</h3>
+    <div class="container-fluid mt-2">
+      <div id="row-icons" class="d-flex ml-4">
+        <h3 class="mr-3">TV Shows</h3>
 
         <div class="dropdown">
           <button
@@ -89,9 +91,12 @@
           <div><i class="bi bi-grid-fill"></i></div>
         </div>
       </div>
+    </div>
 
-      <div class="row mt-4">
-        <h5 class="col-12 text-nowrap mb-1">Trending Now</h5>
+    <div id="trending-now-container" class="container-fluid mt-4">
+      <h5 class="text-nowrap ml-4">Trending Now</h5>
+      <div class="row">
+        <!-- 
         <div class="col-12 col-sm-4 col-md-3 col-lg pr-0">
           <img class="img-fluid" src="./assets/media/media0.webp" alt="" />
         </div>
@@ -113,62 +118,9 @@
         </div>
         <div class="col-lg d-none d-sm-none d-md-none d-lg-block pr-0 pl-1">
           <img class="img-fluid" src="./assets/media/media5.webp" alt="" />
-        </div>
-      </div>
-
-      <div class="row mt-5">
-        <h5 class="col-12 text-nowrap mb-1">Watch It Again</h5>
-        <div class="col-12 col-sm-4 col-md-3 col-lg pr-0">
-          <img class="img-fluid" src="./assets/media/media6.jpg" alt="" />
-        </div>
-        <div
-          class="col-12 col-sm-4 col-md-3 col-lg d-none d-sm-block pr-0 pl-1"
-        >
-          <img class="img-fluid" src="./assets/media/media7.webp" alt="" />
-        </div>
-        <div
-          class="col-12 col-sm-4 col-md-3 col-lg d-none d-sm-block pr-0 pl-1"
-        >
-          <img class="img-fluid" src="./assets/media/media8.webp" alt="" />
-        </div>
-        <div class="col-md-3 col-lg d-none d-sm-none d-md-block pr-0 pl-1">
-          <img class="img-fluid" src="./assets/media/media9.jpg" alt="" />
-        </div>
-        <div class="col-lg d-none d-sm-none d-md-none d-lg-block pr-0 pl-1">
-          <img class="img-fluid" src="./assets/media/media10.jpg" alt="" />
-        </div>
-        <div class="col-lg d-none d-sm-none d-md-none d-lg-block pr-0 pl-1">
-          <img class="img-fluid" src="./assets/media/media11.jpg" alt="" />
-        </div>
-      </div>
-
-      <div class="row mt-5">
-        <h5 class="col-12 text-nowrap mb-1">New Releases</h5>
-        <div class="col-12 col-sm-4 col-md-3 col-lg pr-0">
-          <img class="img-fluid" src="./assets/media/media12.jpg" alt="" />
-        </div>
-        <div
-          class="col-12 col-sm-4 col-md-3 col-lg d-none d-sm-block pr-0 pl-1"
-        >
-          <img class="img-fluid" src="./assets/media/media13.jpg" alt="" />
-        </div>
-        <div
-          class="col-12 col-sm-4 col-md-3 col-lg d-none d-sm-block pr-0 pl-1"
-        >
-          <img class="img-fluid" src="./assets/media/media14.webp" alt="" />
-        </div>
-        <div class="col-md-3 col-lg d-none d-sm-none d-md-block pr-0 pl-1">
-          <img class="img-fluid" src="./assets/media/media15.jpg" alt="" />
-        </div>
-        <div class="col-lg d-none d-sm-none d-md-none d-lg-block pr-0 pl-1">
-          <img class="img-fluid" src="./assets/media/media16.webp" alt="" />
-        </div>
-        <div class="col-lg d-none d-sm-none d-md-none d-lg-block pr-0 pl-1">
-          <img class="img-fluid" src="./assets/media/media17.jpg" alt="" />
-        </div>
+        </div> -->
       </div>
     </div>
-
     <footer class="mt-5">
       <div class="container px-5">
         <div class="row">
