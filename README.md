@@ -10,5 +10,5 @@ These were the requirements for today's challenge:
 
 ## EXTRA FEATURES:
 
-- Add form validation in the backoffice page
+- Add form validation in the backo ffice page
 - Show loading indicators on the main page while waiting for the info from the APIs
