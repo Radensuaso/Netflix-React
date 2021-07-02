@@ -10,7 +10,7 @@ const endPoint = itemID ? url + itemID : url
 //method to use depending if there's an ID or not
 const method = itemID ? "PUT" : "POST"
 
-const postOrEditMovies = async () => {
+const postOrEditMovies = async (event) => {
   const response = await fetch(url, {
     headers: {
       Authorization:
