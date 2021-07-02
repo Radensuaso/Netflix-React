@@ -1,8 +1,11 @@
+/* Common */
+
 body {
   background-color: #141414;
   color: white;
 }
 
+/*Nav Bar*/
 .bg-dark-netflix {
   background-color: #141414;
 }
@@ -11,6 +14,11 @@ body {
   width: 70px;
 }
 
+#profile-pic {
+  width: 2rem;
+}
+
+/*Footer*/
 footer {
   background-color: #141414;
   color: #808080;
