@@ -16,7 +16,7 @@ const loadInfoEndPoint = url + movieCategory
 //method to use depending if there's an ID or not
 const method = movieID ? "PUT" : "POST"
 
-//Check if theres an Id of search if so change the movie inputs to what they had previously, and change the method to put
+// function to check if it's loading
 
 const isLoading = async function (loading) {
   const spinner = document.querySelector(".spinner-grow")
@@ -61,7 +61,11 @@ const checkId = async function () {
 
       isLoading(false)
     } catch (err) {
-      document.querySelector("#error-container .text-danger").innerText = err
+      const errorContainer = document.querySelector(
+        "#error-container .text-danger"
+      )
+      errorContainer.classList.remove("d-none")
+      errorContainer.innerText = err
     }
   } else {
     isLoading(false)
@@ -98,25 +102,27 @@ const postOrEditMovies = async (event) => {
     isLoading(false)
 
     if (response.ok) {
-      /* const alertSuccess = document.querySelector(".alert-success") */
+      const alertSuccess = document.querySelector(".alert-success")
       if (movieID) {
-        /* alertSuccess.classList.remove("d-none")
-        alertSuccess.innerText = `Your Movie with the ID:${movie._id} was edited with Success!` */
-        console.log("The Movie/Show was Edited with success")
-      } else {
-        /* 
         alertSuccess.classList.remove("d-none")
-        alertSuccess.innerText = `Your Movie was submitted with success! Movie ID: ${movie._id}` */
-        console.log("The Movie/Show was submitted with success")
+        alertSuccess.innerText = `Your Movie with the was edited with Success!`
+
+        setTimeout(() => {
+          window.location.href = "/"
+        }, 4000)
+      } else {
+        alertSuccess.classList.remove("d-none")
+        alertSuccess.innerText = `Your Movie was submitted with success!`
+
+        setTimeout(() => {
+          window.location.href = "/"
+        }, 4000)
       }
-    } /* 
-    setTimeout(() => {
-      window.location.href = "/"
-    }, 4000) */
+    }
   } catch (err) {
-    /* const alertDanger = document.querySelector(".alert-danger")
+    const alertDanger = document.querySelector(".alert-danger")
     alertDanger.classList.remove("d-none")
-    alertDanger.innerText = err */
+    alertDanger.innerText = err
     console.log(err)
   }
 }
@@ -135,26 +141,21 @@ const deleteMovie = async function () {
         },
       })
 
-      const movie = await response.json()
-
       isLoading(false)
 
       const alertSuccess = document.querySelector(".alert-success")
       if (response.ok) {
-        /* alertSuccess.classList.remove("d-none")
-        alertSuccess.innerText = `Your movie with the ID: ${movie._id} was deleted with Success!` */
-        console.log("Movie/Show was deleted with success")
+        alertSuccess.classList.remove("d-none")
+        alertSuccess.innerText = `Your movie was deleted with Success!`
       }
-      /* 
+
       setTimeout(() => {
         window.location.href = "/"
-      }, 4000) */
+      }, 4000)
     } catch (err) {
-      if (err) {
-        const alertDanger = document.querySelector(".alert-danger")
-        alertDanger.classList.remove("d-none")
-        alertDanger.innerText = err
-      }
+      const alertDanger = document.querySelector(".alert-danger")
+      alertDanger.classList.remove("d-none")
+      alertDanger.innerText = err
     }
   }
 }
