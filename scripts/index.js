@@ -1,13 +1,18 @@
-/* // function to check if it's loading
+// function to check if it's loading
 
-const isLoading = async function (loading) {
-  const spinner = document.querySelector(".spinner-grow")
+const isLoading = async function (loading, s) {
+  const spinnerArray = [
+    document.querySelector("#fantasy-container .spinner-grow"),
+    document.querySelector("#comedy-container .spinner-grow"),
+    document.querySelector("#drama-container .spinner-grow"),
+    document.querySelector("#trending-now-container .spinner-grow"),
+  ]
   if (loading) {
-    spinner.classList.remove("d-none")
+    spinnerArray[s].classList.remove("d-none")
   } else {
-    spinner.classList.add("d-none")
+    spinnerArray[s].classList.add("d-none")
   }
-} */
+}
 
 //function to generate cols
 const generateCol = (movie) => {
@@ -18,116 +23,126 @@ const generateCol = (movie) => {
   </div>`
 }
 
-//function to generate Fantasy movies/shows
-const generateFantasy = async (url, genres) => {
+//function to Fetch movies/shows depending on genres
+const fetchMovies = async (url, genres, k) => {
   try {
-    const response = await fetch(url + genres[0], {
+    const response = await fetch(url + genres[k], {
       headers: {
         Authorization:
           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjNjA5ZmIzNTgxNzAwMTVjMjI3MGMiLCJpYXQiOjE2MjUwNTUzOTEsImV4cCI6MTYyNjI2NDk5MX0.4rreCWruc8iinYHIIdhbPTQo52bs9c82UeMWN-fKg0o",
       },
     })
 
-    const fantasyMovies = await response.json()
-    console.log("Fantasy: ", fantasyMovies)
-
-    const fantasyRow = document.querySelector("#fantasy-container .row")
-    fantasyMovies.forEach((movie) => {
-      fantasyRow.innerHTML += generateCol(movie)
-    })
+    const movies = await response.json()
+    return movies
   } catch (err) {
-    console.log(err)
+    switch (k) {
+      case 0:
+        const fantasyErrorAlert = document.querySelector(
+          "#fantasy-container .alert-danger"
+        )
+        fantasyErrorAlert.classList.remove("d-none")
+        fantasyErrorAlert.innerText = err
+        break
+      case 1:
+        const comedyErrorAlert = document.querySelector(
+          "#comedy-container .alert-danger"
+        )
+        comedyErrorAlert.classList.remove("d-none")
+        comedyErrorAlert.innerText = err
+        break
+      case 2:
+        const dramaErrorAlert = document.querySelector(
+          "#drama-container .alert-danger"
+        )
+        dramaErrorAlert.classList.remove("d-none")
+        dramaErrorAlert.innerText = err
+        break
+      default:
+        break
+    }
   }
+}
+
+//function to generate Fantasy movies/shows
+const generateFantasy = async (url, genres) => {
+  const fantasyMovies = await fetchMovies(url, genres, 0)
+  console.log("Fantasy: ", fantasyMovies)
+
+  //Here we randomly sort the array to display the movies/shows in different orders every time
+  fantasyMovies.sort(function () {
+    return 0.5 - Math.random()
+  })
+
+  const fantasyRow = document.querySelector("#fantasy-container .row")
+  fantasyMovies.forEach((movie) => {
+    fantasyRow.innerHTML += generateCol(movie)
+  })
+
+  isLoading(false, 0)
 }
 
 //function to generate Comedy movies/shows
 const generateComedy = async (url, genres) => {
-  try {
-    const response = await fetch(url + genres[1], {
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjNjA5ZmIzNTgxNzAwMTVjMjI3MGMiLCJpYXQiOjE2MjUwNTUzOTEsImV4cCI6MTYyNjI2NDk5MX0.4rreCWruc8iinYHIIdhbPTQo52bs9c82UeMWN-fKg0o",
-      },
-    })
+  const comedyMovies = await fetchMovies(url, genres, 1)
+  console.log("Comedy: ", comedyMovies)
 
-    const comedyMovies = await response.json()
-    console.log("Comedy: ", comedyMovies)
+  //Here we randomly sort the array to display the movies/shows in different orders every time
+  comedyMovies.sort(function () {
+    return 0.5 - Math.random()
+  })
 
-    const comedyRow = document.querySelector("#comedy-container .row")
-    comedyMovies.forEach((movie) => {
-      comedyRow.innerHTML += generateCol(movie)
-    })
-  } catch (err) {
-    console.log(err)
-  }
+  const comedyRow = document.querySelector("#comedy-container .row")
+  comedyMovies.forEach((movie) => {
+    comedyRow.innerHTML += generateCol(movie)
+  })
+  isLoading(false, 1)
 }
 
 //function to generate Drama movies/shows
 const generateDrama = async (url, genres) => {
-  try {
-    const response = await fetch(url + genres[2], {
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjNjA5ZmIzNTgxNzAwMTVjMjI3MGMiLCJpYXQiOjE2MjUwNTUzOTEsImV4cCI6MTYyNjI2NDk5MX0.4rreCWruc8iinYHIIdhbPTQo52bs9c82UeMWN-fKg0o",
-      },
-    })
+  const dramaMovies = await fetchMovies(url, genres, 2)
+  console.log("Drama: ", dramaMovies)
 
-    const dramaMovies = await response.json()
-    console.log("Drama: ", dramaMovies)
+  //Here we randomly sort the array to display the movies/shows in different orders every time
+  dramaMovies.sort(function () {
+    return 0.5 - Math.random()
+  })
 
-    const dramaRow = document.querySelector("#drama-container .row")
-    dramaMovies.forEach((movie) => {
-      dramaRow.innerHTML += generateCol(movie)
-    })
-  } catch (err) {
-    console.log(err)
-  }
+  const dramaRow = document.querySelector("#drama-container .row")
+  dramaMovies.forEach((movie) => {
+    dramaRow.innerHTML += generateCol(movie)
+  })
+  isLoading(false, 2)
 }
 
 //function to generate trending now movies/shows
 const generateTrendingNow = async (url, genres) => {
-  try {
-    const response = await fetch(url + genres[0], {
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjNjA5ZmIzNTgxNzAwMTVjMjI3MGMiLCJpYXQiOjE2MjUwNTUzOTEsImV4cCI6MTYyNjI2NDk5MX0.4rreCWruc8iinYHIIdhbPTQo52bs9c82UeMWN-fKg0o",
-      },
-    })
+  const fantasyMovies = await fetchMovies(url, genres, 0)
+  fantasyMovies.sort(function () {
+    return 0.5 - Math.random()
+  })
 
-    const fantasyMovies = await response.json()
+  const comedyMovies = await fetchMovies(url, genres, 1)
+  comedyMovies.sort(function () {
+    return 0.5 - Math.random()
+  })
+  const dramaMovies = await fetchMovies(url, genres, 2)
+  dramaMovies.sort(function () {
+    return 0.5 - Math.random()
+  })
 
-    const response2 = await fetch(url + genres[1], {
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjNjA5ZmIzNTgxNzAwMTVjMjI3MGMiLCJpYXQiOjE2MjUwNTUzOTEsImV4cCI6MTYyNjI2NDk5MX0.4rreCWruc8iinYHIIdhbPTQo52bs9c82UeMWN-fKg0o",
-      },
-    })
+  const trendingNowMovies = [
+    ...fantasyMovies.slice(0, 2),
+    ...comedyMovies.slice(0, 2),
+    ...dramaMovies.slice(0, 2),
+  ]
 
-    const comedyMovies = await response2.json()
-
-    const response3 = await fetch(url + genres[2], {
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjNjA5ZmIzNTgxNzAwMTVjMjI3MGMiLCJpYXQiOjE2MjUwNTUzOTEsImV4cCI6MTYyNjI2NDk5MX0.4rreCWruc8iinYHIIdhbPTQo52bs9c82UeMWN-fKg0o",
-      },
-    })
-
-    const dramaMovies = await response3.json()
-    const trendingNowMovies = [
-      ...fantasyMovies,
-      ...comedyMovies,
-      ...dramaMovies,
-    ]
-
-    const trendingNowRow = document.querySelector(
-      "#trending-now-container .row"
-    )
-    trendingNowMovies.forEach((movie) => {
-      trendingNowRow.innerHTML += generateCol(movie)
-    })
-  } catch (err) {
-    console.log(err)
-  }
+  const trendingNowRow = document.querySelector("#trending-now-container .row")
+  trendingNowMovies.forEach((movie) => {
+    trendingNowRow.innerHTML += generateCol(movie)
+  })
+  isLoading(false, 3)
 }
 //Window onload
 window.onload = () => {
