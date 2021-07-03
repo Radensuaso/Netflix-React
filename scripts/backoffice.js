@@ -27,6 +27,12 @@ const isLoading = async function (loading) {
   }
 }
 
+//get input fields nodes
+const nameInput = document.getElementById("movie-show-name")
+const descriptionInput = document.getElementById("movie-show-description")
+const categoryInput = document.getElementById("movie-show-category")
+const imageInput = document.getElementById("movie-show-image")
+
 //Check if theres an Id of search if so change the movie inputs to what they had previously, and change the method to put
 const checkId = async function () {
   if (movieID) {
@@ -51,11 +57,10 @@ const checkId = async function () {
 
       movies.forEach((movie) => {
         if (movie._id === movieID) {
-          document.getElementById("movie-show-name").value = movie.name
-          document.getElementById("movie-show-description").value =
-            movie.description
-          document.getElementById("movie-show-category").value = movie.category
-          document.getElementById("movie-show-image").value = movie.imageUrl
+          nameInput.value = movie.name
+          descriptionInput.value = movie.description
+          categoryInput.value = movie.category
+          imageInput.value = movie.imageUrl
         }
       })
 
@@ -72,6 +77,47 @@ const checkId = async function () {
   }
 }
 
+//check invalid input
+
+const checkInvalid = () => {
+  if (nameInput.validity.valueMissing) {
+    nameInput.classList.add("is-invalid")
+  } else {
+    nameInput.classList.remove("is-invalid")
+  }
+
+  if (descriptionInput.validity.valueMissing) {
+    descriptionInput.classList.add("is-invalid")
+  } else {
+    descriptionInput.classList.remove("is-invalid")
+  }
+
+  if (categoryInput.validity.valueMissing) {
+    categoryInput.classList.add("is-invalid")
+  } else {
+    categoryInput.classList.remove("is-invalid")
+  }
+
+  if (imageInput.validity.valueMissing) {
+    imageInput.classList.add("is-invalid")
+  } else {
+    imageInput.classList.remove("is-invalid")
+  }
+}
+
+//check valid input
+const checkValid = (e) => {
+  const currentInput = e.currentTarget
+
+  if (currentInput.validity.valueMissing) {
+    currentInput.classList.add("is-invalid")
+    currentInput.classList.remove("is-valid")
+  } else {
+    currentInput.classList.add("is-valid")
+    currentInput.classList.remove("is-invalid")
+  }
+}
+
 // function to submit or edit a movie
 const postOrEditMovies = async (event) => {
   // prevent the default behavior of the form
@@ -79,10 +125,10 @@ const postOrEditMovies = async (event) => {
 
   //submitted Movie as an object
   const submittedMovie = {
-    name: document.getElementById("movie-show-name").value,
-    description: document.getElementById("movie-show-description").value,
-    category: document.getElementById("movie-show-category").value,
-    imageUrl: document.getElementById("movie-show-image").value,
+    name: nameInput.value,
+    description: descriptionInput.value,
+    category: categoryInput.value,
+    imageUrl: imageInput.value,
   }
 
   isLoading(true)
@@ -123,7 +169,6 @@ const postOrEditMovies = async (event) => {
     const alertDanger = document.querySelector(".alert-danger")
     alertDanger.classList.remove("d-none")
     alertDanger.innerText = err
-    console.log(err)
   }
 }
 
@@ -162,4 +207,9 @@ const deleteMovie = async function () {
 
 window.onload = () => {
   checkId()
+
+  nameInput.addEventListener("keyup", (e) => checkValid(e))
+  descriptionInput.addEventListener("keyup", (e) => checkValid(e))
+  categoryInput.addEventListener("keyup", (e) => checkValid(e))
+  imageInput.addEventListener("keyup", (e) => checkValid(e))
 }
